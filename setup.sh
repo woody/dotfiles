@@ -48,6 +48,15 @@ gem "cocoapods"  # Manage Cocoa (Touch) project dependencies.
 gem "bundler"    # Manage Ruby application dependencies.
 
 
+# Manage Python packages by pip instead of easy_install
+{ #pip is installed?
+  /usr/bin/which pip >/dev/null
+} || { # Install pip
+  /usr/bin/sudo -E -p "Install pip for system python and require password: " \
+  /usr/bin/easy_install --quiet -s /usr/bin pip 2>/dev/null
+}
+
+
 # Success prompt
 success () {
   echo -e "\xE2\x9C\x94\xEF\xB8\x8E $1"
@@ -56,3 +65,4 @@ success () {
 success "Droid Sans Mono - My favourite programming font."
 success "Cocoapods - Manage Cocoa (Touch) project dependencies."
 success "Bundler - Manage Ruby application dependencies."
+success "pip - Manage Python packages by pip instead easy_install."
