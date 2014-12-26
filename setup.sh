@@ -5,7 +5,11 @@
 set -u
 set -e
 
-# print error message and exit. e.g.
+# Bool
+TRUE=1
+FALSE=0
+
+# print error message and exit.
 abort () {
   echo -e "$1"
   exit 1
@@ -57,12 +61,34 @@ gem "bundler"    # Manage Ruby application dependencies.
 }
 
 
-# Success prompt
+# Homebrew - Mac OSX missing package manager
+BREW_INSTALLED=$FALSE
+
+{ # Homebrew is installed?
+  /usr/bin/which brew >/dev/null && BREW_INSTALLED=$TRUE
+} || { # Install homebrew
+/usr/bin/sudo -E -p "Install Homebrew require password: " \
+/bin/mkdir -p /usr/local && \
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
+BREW_INSTALLED=$TRUE
+}
+
+# Prompt symbol
 success () {
-  echo -e "\xE2\x9C\x94\xEF\xB8\x8E $1"
+  echo -e "\xE2\x9C\x94\xEF\xB8\x8E $@"
+}
+
+fail () {
+  echo -e "\xE2\x9C\x98 $@"
 }
 
 success "Droid Sans Mono - My favourite programming font."
 success "Cocoapods - Manage Cocoa (Touch) project dependencies."
 success "Bundler - Manage Ruby application dependencies."
 success "pip - Manage Python packages by pip instead easy_install."
+
+# Description
+BREW_DESC="Homebrew - Mac OSX missing package manager."
+
+
+[ $BREW_INSTALLED -eq $TRUE ] && success ${BREW_DESC} || fail ${BREW_DESC}
