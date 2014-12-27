@@ -5,21 +5,30 @@
 set -u
 set -e
 
-# Bool
-TRUE=1
-FALSE=0
+# Bool Constant
+declare -ri TRUE=1
+declare -ri FALSE=0
 
-# print error message and exit.
-abort () {
-  echo -e "$1"
-  exit 1
+
+# Prompt
+success () {
+  echo -e "\xE2\x9C\x94\xEF\xB8\x8E $@"
 }
 
+fail () {
+  echo -e "\xE2\x9C\x98 $@"
+}
+
+error () {
+  echo "!!! $@"
+}
+
+
 # Droid Sans Mono is my favourite font for programming
-DROID_INSTALLED_SUCCESSFUL_MSG="Droid Sans Mono is installed."
+DROID_FONT_INSTALLED=$FALSE
 
 is_droid_installed () {
-  ls "$1" | grep "DroidSansMono" >/dev/null
+  ls "$1" | grep "DroidSansMono" >/dev/null && DROID_FONT_INSTALLED=$TRUE
 }
 
 { # Installed at system-wide?
@@ -29,35 +38,44 @@ is_droid_installed ~/Library/Fonts/
 } || { # Download and install
 curl http://download.damieng.com/fonts/redistributed/DroidFamily.zip -o /tmp/DroidFamily.zip
 unzip /tmp/DroidFamily.zip -d /tmp >>/dev/null && \
-cp /tmp/DroidFonts/DroidSansMono.ttf ~/Library/Fonts/
+cp /tmp/DroidFonts/DroidSansMono.ttf ~/Library/Fonts/ && \
+DROID_FONT_INSTALLED=$TRUE
 }
 
 
-# RubyGems for system Ruby and help to development
+# Gems for system Ruby
 gem () {
-  local GEM='/usr/bin/gem'
+  # Install rubygem
+  # $1 specified gem name and following gem install options
+
+  local GEM=`/usr/bin/which gem`
 
   ( $GEM list -i "$1" >/dev/null ) || {
   /usr/bin/sudo -E -p "Install $1 for system ruby and require password: " \
-  $GEM install "$1" "$@"
+  $GEM install "$@"
   }
 }
 
-( [ -x /usr/bin/gem ] ) || {
-  abort "Couldn't found RubyGem," \
-  "please make sure that is installed."
-}
+PODS_INSTALLED=$FALSE
+BUNDLER_INSTALLED=$FALSE
 
-gem "cocoapods"  # Manage Cocoa (Touch) project dependencies.
-gem "bundler"    # Manage Ruby application dependencies.
+{ # Rubygem is installed?
+  /usr/bin/which gem >/dev/null || error "RubyGem not found."
+} && { # Install gems for system ruby
+  gem "cocoapods" && PODS_INSTALLED=$TRUE
+  gem "bundler" && BUNDLER_INSTALLED=$TRUE
+}
 
 
 # Manage Python packages by pip instead of easy_install
+PIP_INSTALLED=$FALSE
+
 { #pip is installed?
-  /usr/bin/which pip >/dev/null
+  /usr/bin/which pip >/dev/null && PIP_INSTALLED=$TRUE
 } || { # Install pip
   /usr/bin/sudo -E -p "Install pip for system python and require password: " \
-  /usr/bin/easy_install --quiet -s /usr/bin pip 2>/dev/null
+  /usr/bin/easy_install -s /usr/bin pip 2>/dev/null && \
+  PIP_INSTALLED=$TRUE
 }
 
 
@@ -73,22 +91,17 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 BREW_INSTALLED=$TRUE
 }
 
-# Prompt symbol
-success () {
-  echo -e "\xE2\x9C\x94\xEF\xB8\x8E $@"
-}
-
-fail () {
-  echo -e "\xE2\x9C\x98 $@"
-}
-
-success "Droid Sans Mono - My favourite programming font."
-success "Cocoapods - Manage Cocoa (Touch) project dependencies."
-success "Bundler - Manage Ruby application dependencies."
-success "pip - Manage Python packages by pip instead easy_install."
 
 # Description
+DROID_FONT_DESC="Droid Sans Mono - My favourite programming font."
+BUNDLER_DESC="Bundler - Manage Ruby application dependencies."
+PODS_DESC="Cocoapods - Manage Cocoa (Touch) project dependencies."
+PIP_DESC="pip - Manage Python packages by pip instead easy_install."
 BREW_DESC="Homebrew - Mac OSX missing package manager."
 
 
+[ $DROID_FONT_INSTALLED -eq $TRUE ] && success ${DROID_FONT_DESC} || fail ${DROID_FONT_INSTALLED}
+[ $PODS_INSTALLED -eq $TRUE ] && success ${PODS_DESC} || fail ${PODS_DESC}
+[ $BUNDLER_INSTALLED -eq $TRUE ] && success ${BUNDLER_DESC} || fail ${BUNDLER_DESC}
+[ $PIP_INSTALLED -eq $TRUE ] && success ${PIP_DESC} || fail ${PIP_DESC}
 [ $BREW_INSTALLED -eq $TRUE ] && success ${BREW_DESC} || fail ${BREW_DESC}
