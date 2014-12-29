@@ -60,10 +60,12 @@ PODS_INSTALLED=$FALSE
 BUNDLER_INSTALLED=$FALSE
 
 { # Rubygem is installed?
-  /usr/bin/which gem >/dev/null || error "RubyGem not found."
+  /usr/bin/which gem >/dev/null
 } && { # Install gems for system ruby
   gem "cocoapods" && PODS_INSTALLED=$TRUE
   gem "bundler" && BUNDLER_INSTALLED=$TRUE
+} || { # Error
+  error "RubyGem not found."
 }
 
 
