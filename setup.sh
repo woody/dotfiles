@@ -23,6 +23,10 @@ error () {
   echo "!!! $@"
 }
 
+# Path
+ruby -e 'abort unless ENV["PATH"].split(":").include? "/usr/local/bin"' || \
+export PATH=/usr/local/bin:$PATH
+
 
 # Droid Sans Mono is my favourite font for programming
 DROID_FONT_INSTALLED=$FALSE
@@ -91,6 +95,19 @@ BREW_INSTALLED=$FALSE
 /bin/mkdir -p /usr/local && \
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
 BREW_INSTALLED=$TRUE
+}
+
+formula () {
+  # Install specified formula
+  # $1 specified formula name and following brew install options
+  #
+  local BREW=`/usr/bin/which brew`
+
+  { # Formula installed?
+    $BREW list | grep "$1" >/dev/null
+  } || { # Install formula
+   $BREW install "$@"
+  }
 }
 
 
