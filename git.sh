@@ -67,3 +67,10 @@ GLOBAL_GITIGNORE=$TRUE
 fail $GLOBAL_GITIGNORE_MSG
 
 git config --global core.excludesfile ~/.gitignore_global
+git config --global core.editor vim
+git config --global core.whitespace \
+tralling-space,space-before-tab,tab-in-indent
+git config --global core.autocrlf input
+git config --global push.default simple
+git config --global color.ui auto
+git config --global include.path ~/.gitconfig_user
