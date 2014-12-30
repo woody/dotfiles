@@ -124,3 +124,7 @@ BREW_DESC="Homebrew - Mac OSX missing package manager."
 [ $BUNDLER_INSTALLED -eq $TRUE ] && success ${BUNDLER_DESC} || fail ${BUNDLER_DESC}
 [ $PIP_INSTALLED -eq $TRUE ] && success ${PIP_DESC} || fail ${PIP_DESC}
 [ $BREW_INSTALLED -eq $TRUE ] && success ${BREW_DESC} || fail ${BREW_DESC}
+
+cd $(dirname $0)
+
+source git.sh
