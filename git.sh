@@ -22,10 +22,10 @@ if [ -e $GITIGNORE_LOCAL_REPO/.git ]
       git pull origin master > /dev/null 2>/dev/null
     } || { # Back up to ~/old-gitignore.d and clone
       cd .. && mv -f $GITIGNORE_LOCAL_REPO ~/old_gitignore-templates && \
-      git clone $GITIGNORE_REMOTE_REPO $GITIGNORE_LOCAL_REPO
+      git clone -q $GITIGNORE_REMOTE_REPO $GITIGNORE_LOCAL_REPO
     }
 else
-  git clone $GITIGNORE_REMOTE_REPO $GITIGNORE_LOCAL_REPO
+  git clone -q $GITIGNORE_REMOTE_REPO $GITIGNORE_LOCAL_REPO
 fi
 
 git_ignore () {
