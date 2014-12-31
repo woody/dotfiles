@@ -97,6 +97,20 @@ if [ -d /Applications/Kaleidoscope.app ] || [ -d ~/Applications/Kaleidoscope.app
 
   integrate_ksdiff () {
     if (( $# )); then error "No arguments expected."; fi
+
+    # git difftool
+    git config --global diff.tool Kaleidoscope
+    git config --global difftool.Kaleidoscope.cmd \
+    '/usr/local/bin/ksdiff --partial-changeset --relative-path "$MERGED" -- "$LOCAL" "$REMOTE"'
+    git config --global difftool.prompt false
+
+    # git mergetool
+    git config --global merge.tool Kaleidoscope
+    git config --global mergetool.Kaleidoscope.cmd \
+    '/usr/local/bin/ksdiff --merge --output "$MERGED" --base "$BASE" -- "$LOCAL" "$REMOTE"'
+    git config --global mergetool.prompt false
+
+    success "Integrate Kaleidoscope.app with git."
   }
 
   install_ksdiff  () {
