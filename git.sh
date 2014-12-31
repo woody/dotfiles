@@ -76,13 +76,17 @@ git config --global color.ui auto
 git config --global include.path ~/.gitconfig_user
 
 # Install Tower.app command-line utility
-TOWER_CLI_INTEGRATED=$FALSE
-TOWER_CLI=/Applications/Tower.app/Contents/MacOS/gittower
+declare TOWER_CLI
+SYS_TOWER_CLI=/Applications/Tower.app/Contents/MacOS/gittower
+USER_TOWER_CLI=~/Applications/Tower.app/Contents/MacOS/gittower
 
-if ! [ -d $TOWER_CLI ] && [ -x $TOWER_CLI ]; then
-  /bin/ln -fs $TOWER_CLI /usr/local/bin/gittower && \
-  TOWER_CLI_INTEGRATED=$TRUE
+if ! [ -d $SYS_TOWER_CLI ] && [ -x $SYS_TOWER_CLI ]; then
+  TOWER_CLI=$SYS_TOWER_CLI
+elif ! [ -d $USER_TOWER_CLI ] && [ -x $USER_TOWER_CLI ]; then
+  TOWER_CLI=$USER_TOWER_CLI
 fi
 
-[ $TOWER_CLI_INTEGRATED -eq $TRUE ] && \
-success "Install Tower.app command-line utility."
+if [ -n $TOWER_CLI ]; then
+  /bin/ln -fs $TOWER_CLI /usr/local/bin/gittower && \
+  success "Install Tower.app command-line utility."
+fi
