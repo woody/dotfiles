@@ -90,3 +90,38 @@ if [ -n $TOWER_CLI ]; then
   /bin/ln -fs $TOWER_CLI /usr/local/bin/gittower && \
   success "Install Tower.app command-line utility."
 fi
+
+# Install ksdiff and integrate with git
+# Require Kaleidoscope.app installed at system-wide or user-wide
+if [ -d /Applications/Kaleidoscope.app ] || [ -d ~/Applications/Kaleidoscope.app ]; then
+
+  integrate_ksdiff () {
+    if (( $# )); then error "No arguments expected."; fi
+  }
+
+  install_ksdiff  () {
+    if (( $# )); then error "No arguments expected."; fi
+
+    echo "Install ksdiff"
+    /usr/bin/sudo -E -p "Require password for installing ksdiff " \
+    $(/usr/bin/which installer) -pkg /tmp/ksdiff-latest/Install\ ksdiff.pkg \
+    -target LocalSystem >/dev/null
+  }
+
+  # ksdiff is installed?
+  [ -x /usr/local/bin/ksdiff ] && {
+    integrate_ksdiff
+  } || { # Install ksdiff
+    # latest ksdiff installation program exists on local?
+    [ -e "/tmp/ksdiff-latest/Install ksdiff.pkg" ] && {
+      install_ksdiff && integrate_ksdiff
+    } || {
+      # Download latest ksdiff installation program and integration
+      TMP_KSDIFF_ARCHIVE=/tmp/ksdiff-latest.zip
+      $(/usr/bin/which curl) -s -o $TMP_KSDIFF_ARCHIVE -L \
+      https://updates.blackpixel.com/latest?app=ksdiff && \
+      $(/usr/bin/which unzip) -q $TMP_KSDIFF_ARCHIVE -d /tmp/ksdiff-latest && \
+      install_ksdiff && integrate_ksdiff
+    }
+  }
+fi
