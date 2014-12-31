@@ -102,7 +102,6 @@ if [ -d /Applications/Kaleidoscope.app ] || [ -d ~/Applications/Kaleidoscope.app
   install_ksdiff  () {
     if (( $# )); then error "No arguments expected."; fi
 
-    echo "Install ksdiff"
     /usr/bin/sudo -E -p "Require password for installing ksdiff " \
     $(/usr/bin/which installer) -pkg /tmp/ksdiff-latest/Install\ ksdiff.pkg \
     -target LocalSystem >/dev/null
@@ -115,8 +114,7 @@ if [ -d /Applications/Kaleidoscope.app ] || [ -d ~/Applications/Kaleidoscope.app
     # latest ksdiff installation program exists on local?
     [ -e "/tmp/ksdiff-latest/Install ksdiff.pkg" ] && {
       install_ksdiff && integrate_ksdiff
-    } || {
-      # Download latest ksdiff installation program and integration
+    } || { # Download latest ksdiff installation program and integration
       TMP_KSDIFF_ARCHIVE=/tmp/ksdiff-latest.zip
       $(/usr/bin/which curl) -s -o $TMP_KSDIFF_ARCHIVE -L \
       https://updates.blackpixel.com/latest?app=ksdiff && \
