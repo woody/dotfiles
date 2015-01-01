@@ -75,21 +75,32 @@ git config --global push.default simple
 git config --global color.ui auto
 git config --global include.path ~/.gitconfig_user
 
-# Install Tower.app command-line utility
-declare TOWER_CLI
-SYS_TOWER_CLI=/Applications/Tower.app/Contents/MacOS/gittower
-USER_TOWER_CLI=~/Applications/Tower.app/Contents/MacOS/gittower
+# Install Tower.app command-line
+TOWER_CLI_INSTALLED=$FALSE
+TOWER_CLI_PATH=/usr/local/bin/gittower
 
-if ! [ -d $SYS_TOWER_CLI ] && [ -x $SYS_TOWER_CLI ]; then
-  TOWER_CLI=$SYS_TOWER_CLI
-elif ! [ -d $USER_TOWER_CLI ] && [ -x $USER_TOWER_CLI ]; then
-  TOWER_CLI=$USER_TOWER_CLI
-fi
+# Tower.app command-line is installed?
+[ -x $TOWER_CLI_PATH ] && TOWER_CLI_INSTALLED=$TRUE || { \
+# Install Tower.app command-line
+# Require Tower.app installed at system-wide or user-wide
+  declare TOWER_CLI
+  SYS_TOWER_CLI=/Applications/Tower.app/Contents/MacOS/gittower
+  USER_TOWER_CLI=~/Applications/Tower.app/Contents/MacOS/gittower
 
-if [ -n $TOWER_CLI ]; then
-  /bin/ln -fs $TOWER_CLI /usr/local/bin/gittower && \
-  success "Install Tower.app command-line utility."
-fi
+  if ! [ -d $SYS_TOWER_CLI ] && [ -x $SYS_TOWER_CLI ]; then
+    TOWER_CLI=$SYS_TOWER_CLI
+  elif ! [ -d $USER_TOWER_CLI ] && [ -x $USER_TOWER_CLI ]; then
+    TOWER_CLI=$USER_TOWER_CLI
+  fi
+
+  if [ -n $TOWER_CLI ]; then
+    /bin/ln -fs $TOWER_CLI $TOWER_CLI_PATH && \
+    TOWER_CLI_INSTALLED=$TRUE
+  fi
+}
+
+[ $TOWER_CLI_INSTALLED -eq $TRUE ] && \
+success "Install Tower.app command-line."
 
 # Install ksdiff and integrate with git
 # Require Kaleidoscope.app installed at system-wide or user-wide
