@@ -1,6 +1,29 @@
 #!/usr/bin/env bash
 # Mac OS X Preferences, Inspired by Mathias' legendary .osx
 
+OS_VERSION=$(defaults read /System/Library/CoreServices/SystemVersion ProductVersion);
+
+is_yosemite () {
+  [[ $OS_VERSION == 10.10* ]]
+}
+
+# General
+# Bright appearance
+defaults write -g AppleAquaColorVariant -int 1
+
+# Dark theme on Yosemite
+is_yosemite && { defaults write -g AppleInterfaceStyle -string "Dark"; }
+
+# Highlight color value are subtly difference on certain OS X
+is_yosemite && { # Red color
+  defaults write -g AppleHighlightColor -string "1.000000 0.733333 0.721569"
+} || {
+  defaults write -g AppleHighlightColor -string "1.000000 0.694100 0.549000"; }
+
+# Medium sidebar icon size
+defaults write -g NSTableViewDefaultSizeMode -int 2
+# Enable menu bar transparency
+defaults write -g AppleEnableMenuBarTransparency -bool true
 # Xcode
 { # Xcode installed?
   defaults read -app Xcode >/dev/null &2>/dev/null
