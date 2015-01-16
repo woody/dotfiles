@@ -85,6 +85,29 @@ defaults write  -g com.apple.springing.enabled -bool true
 # Spring-loaded no delay
 defaults write -g com.apple.springing.delay -float 0.0
 
+# Dock
+#
+# Disable auto hide Dock
+defaults write com.apple.dock autohide -bool false
+
+# Dock icon size 38 * 38
+defaults write com.apple.dock tilesize -float 38.0
+
+# Enable Dock icon magnification
+defaults write com.apple.dock magnification -bool true
+
+# Magnification icon size to 56 * 56
+defaults write com.apple.dock largesize -float 56.0
+
+# Enable minimize windows into application icon
+defaults write com.apple.dock minimize-to-application -bool true
+
+# Position on screen bottom
+defaults write com.apple.dock orientation bottom
+
+# Disable bounces when launching application and less visually distracting.
+defaults write com.apple.dock launchanim -bool false
+
 # Xcode
 { # Xcode installed?
   defaults read -app Xcode >/dev/null 2>/dev/null
