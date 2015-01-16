@@ -87,7 +87,7 @@ defaults write -g com.apple.springing.delay -float 0.0
 
 # Xcode
 { # Xcode installed?
-  defaults read -app Xcode >/dev/null &2>/dev/null
+  defaults read -app Xcode >/dev/null 2>/dev/null
 } && {
   # Show line number
   defaults write -app Xcode DVTTextShowLineNumbers -bool true
