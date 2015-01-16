@@ -22,8 +22,69 @@ is_yosemite && { # Red color
 
 # Medium sidebar icon size
 defaults write -g NSTableViewDefaultSizeMode -int 2
+
+# Show scroll bars automatically
+defaults write -g AppleShowScrollBars -string Automatic
+
+# Jump to spot that clicked
+defaults write -g AppleScrollerPagingBehavior -bool true
+
+# Ask to keep changes when closing documents
+defaults write -g NSCloseAlwaysConfirmsChanges -bool true
+
+# Close windows when quitting an application
+defaults write -g NSQuitAlwaysKeepsWindows -bool false
+
 # Enable menu bar transparency
 defaults write -g AppleEnableMenuBarTransparency -bool true
+
+# Enable swipe between pages
+defaults write -g AppleEnableSwipeNavigateWithScrolls -bool true
+
+# Enable mouse swipe navigate with scroll
+defaults write -g AppleEnableMouseSwipeNavigateWithScrolls -bool true
+
+# Set Gregorian calendar and week start at Monday
+defaults write -g AppleFirstWeekday -dict-add gregorian -int 2
+
+# Use metric units
+defaults write -g AppleMetricUnits -bool true
+
+# Set system preferred language to English and region at China
+defaults write -g AppleLocale -string en_CN
+
+# Enable double-click a window's title bar to minimize
+defaults write -g AppleMiniaturizeOnDoubleClick -bool true
+
+# Short key repeat delay
+defaults write -g InitialKeyRepeat -int 15
+
+# Key repeat flash
+defaults write -g KeyRepeat -int 0
+
+# Keyboard -> Text -> Use smart quotes and dashes
+# Enable smart dash substitution
+defaults write -g NSAutomaticDashSubstitutionEnabled -bool true
+# Enable smart quote substitution
+defaults write -g NSAutomaticQuoteSubstitutionEnabled -bool true
+
+# Keyboard -> Text -> Correct spelling automatically
+# Disable auto correct spelling
+defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
+defaults write -g WebAutomaticSpellingCorrectionEnabled -bool false
+
+# Mouse tracking pointer speed.
+defaults write -g com.apple.mouse.scaling -float 0.6785
+
+# Disable F1, F2, etc with special function. Combine fn key with special function
+defaults write -g com.apple.keyboard.fnState -bool true
+
+# Enable spring-loaded folders and windows
+defaults write  -g com.apple.springing.enabled -bool true
+
+# Spring-loaded no delay
+defaults write -g com.apple.springing.delay -float 0.0
+
 # Xcode
 { # Xcode installed?
   defaults read -app Xcode >/dev/null &2>/dev/null
