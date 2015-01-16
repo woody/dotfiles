@@ -108,6 +108,38 @@ defaults write com.apple.dock orientation bottom
 # Disable bounces when launching application and less visually distracting.
 defaults write com.apple.dock launchanim -bool false
 
+# Safari
+#
+# Lanuch Safari with new empty window
+defaults write com.apple.Safari AlwaysRestoreSessionAtLaunch -bool false
+
+# Disable show tab bar
+defaults write com.apple.Safari AlwaysShowTabBar -bool false
+
+# Disable auto fill form
+defaults write com.apple.Safari AutoFillCreditCardData -bool false
+defaults write com.apple.Safari AutoFillFromAddressBook -bool false
+defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
+defaults write com.apple.Safari AutoFillPasswords -bool false
+
+# Disable auto open file after downloaded successful
+defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+
+# Clear download list after Safari quits.
+defaults write com.apple.Safari DownloadsClearingPolicy -int 1
+
+# Remove history after two weeks
+defaults write com.apple.Safari HistoryAgeInDaysLimit -int 14
+
+# Blank home page
+defaults write com.apple.Safari HomePage -string ""
+
+# Show Developer menu
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+
+# Ask Geo location permission once every day
+defaults write com.apple.Safari SafariGeolocationPermissionPolicy -int 1
+
 # Xcode
 { # Xcode installed?
   defaults read -app Xcode >/dev/null 2>/dev/null
