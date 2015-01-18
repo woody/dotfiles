@@ -87,17 +87,17 @@ defaults write -g com.apple.springing.delay -float 0.0
 
 # Dock
 #
-# Disable auto hide Dock
-defaults write com.apple.dock autohide -bool false
+# Auto hide Dock
+defaults write com.apple.dock autohide -bool true
 
-# Dock icon size 38 * 38
-defaults write com.apple.dock tilesize -float 38.0
+# Dock icon size
+defaults write com.apple.dock tilesize -float 60.0
 
 # Enable Dock icon magnification
 defaults write com.apple.dock magnification -bool true
 
-# Magnification icon size to 56 * 56
-defaults write com.apple.dock largesize -float 56.0
+# Magnification icon size
+defaults write com.apple.dock largesize -float 70.0
 
 # Enable minimize windows into application icon
 defaults write com.apple.dock minimize-to-application -bool true
