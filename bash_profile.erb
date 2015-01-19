@@ -1,0 +1,11 @@
+export PATH=<%= path %>
+
+<%# Enable pyenv %>
+<% if pyenv_installed? %>
+eval "$(pyenv init -)"
+<% end %>
+
+[[ -f ~/.bashrc ]] && {
+  # Export bashrc
+  . ~/.bashrc
+}
