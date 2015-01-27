@@ -41,3 +41,16 @@ else
     $(/usr/bin/which git) clone --recursive --quite $DOTFILES_REMOTE $DOTFILES_LOCAL
   }
 fi
+
+# Export PATH /usr/local/bin
+$(/usr/bin/which ruby) -e 'abort unless ENV["PATH"].split(":").include? "/usr/local/bin"' \
+|| export PATH=/usr/local/bin:$PATH
+
+
+# homebrew installed?
+{ /usr/bin/which brew >/dev/null; } || {
+  # Install hombrew
+  /usr/bin/sudo -E -p "Require password to install homebrew: " \
+  /usr/bin/mkdir -p /usr/local && \
+  $(/usr/bin/which ruby) -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+}
