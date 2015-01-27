@@ -46,9 +46,10 @@ fi
 $(/usr/bin/which ruby) -e 'abort unless ENV["PATH"].split(":").include? "/usr/local/bin"' \
 || export PATH=/usr/local/bin:$PATH
 
+source $DOTFILES_LOCAL/check.sh
 
 # homebrew installed?
-{ /usr/bin/which brew >/dev/null; } || {
+{ require "brew" >/dev/null; } || {
   # Install hombrew
   /usr/bin/sudo -E -p "Require password to install homebrew: " \
   /usr/bin/mkdir -p /usr/local && \
