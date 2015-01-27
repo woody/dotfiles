@@ -27,8 +27,10 @@ if [ $IS_DEV ]; then
   [[ $DOTFILES_DEV == "." ]] && {
     DOTFILES_DEV=$(/bin/pwd)
   }
-
-  $(/usr/bin/which install) -d $DOTFILES_DEV $DOTFILES_LOCAL
+  [ -L $DOTFILES_LOCAL ] || {
+    # Link DEV to LOCAL
+    $(/usr/bin/which ln) -sF $DOTFILES_DEV $DOTFILES_LOCAL
+  }
 else
   [ -e $DOTFILES_LOCAL ] && {
     # Checkout ~/.dotfiles existence
