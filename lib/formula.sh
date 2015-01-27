@@ -50,3 +50,7 @@ formula () {
     }
   done
 }
+
+[[ -e $DOTFILES_LOCAL/formulas ]] && {
+  source $DOTFILES_LOCAL/formulas
+}

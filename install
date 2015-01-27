@@ -46,4 +46,7 @@ fi
 $(/usr/bin/which ruby) -e 'abort unless ENV["PATH"].split(":").include? "/usr/local/bin"' \
 || export PATH=/usr/local/bin:$PATH
 
-source $DOTFILES_LOCAL/formulas
+
+for lib in $DOTFILES_LOCAL/lib/*.sh; do
+  source "$lib"
+done

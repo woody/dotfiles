@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-set -u
-
-source $DOTFILES_LOCAL/lib/formula.sh
-
 # Development toolkit
 formula readline \
         zlib \
