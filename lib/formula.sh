@@ -26,7 +26,7 @@ require_brew () {
 
     taps () {
       for t in "$@"; do
-        { brew tap | grep "$t"; } || {
+        { brew tap | /usr/bin/grep "$t"; } || {
           brew tap "$t"
         }
       done
@@ -46,8 +46,11 @@ formula () {
   require_brew
 
   for f in "$@"; do
+    # Formula installation options following formula name.
+    # Extract formula name
+    local name=$(/bin/echo $f | /usr/bin/awk '{print $1}')
     # Formula is installed?
-    { $(/usr/bin/which brew) list | grep "$f" >/dev/null; } || {
+    { $(/usr/bin/which brew) list | /usr/bin/grep "$name" >/dev/null; } || {
       # Install formula
       $(/usr/bin/which brew) install "$f"
     }
