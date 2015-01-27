@@ -6,7 +6,7 @@ set -e
 set -u
 
 
-DOTFILES_LOCAL=~/.dotfiles
+DOTFILES_LOCAL="$HOME/.dotfiles"
 DOTFILES_REMOTE="https://github.com/woody/dotfiles.git"
 
 declare IS_DEV
@@ -46,12 +46,4 @@ fi
 $(/usr/bin/which ruby) -e 'abort unless ENV["PATH"].split(":").include? "/usr/local/bin"' \
 || export PATH=/usr/local/bin:$PATH
 
-source $DOTFILES_LOCAL/check.sh
-
-# homebrew installed?
-{ require "brew" >/dev/null; } || {
-  # Install hombrew
-  /usr/bin/sudo -E -p "Require password to install homebrew: " \
-  /usr/bin/mkdir -p /usr/local && \
-  $(/usr/bin/which ruby) -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-}
+source $DOTFILES_LOCAL/formulas
