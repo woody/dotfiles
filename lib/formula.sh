@@ -19,21 +19,24 @@ require_brew () {
       $(/usr/bin/which ruby) -e \
       "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     }
-  } && { # Extend homebrew
+  } && {
+    [[ -x $(brew --prefix)/bin/brew-cask ]] || {
+      brew install caskroom/cask/brew-cask
+    }
+
     taps () {
       for t in "$@"; do
-        brew tap "$t" 2>/dev/null
+        { brew tap | grep "$t"; } || {
+          brew tap "$t"
+        }
       done
     }
 
+    # Extend homebrew formula repo
     taps "caskroom/cask" \
           "homebrew/binary" \
           "homebrew/completions" \
           "homebrew/dupes"
-
-    { brew cask >/dev/null; } || {
-      brew install caskroom/cask/brew-cask
-    }
   }
 }
 
