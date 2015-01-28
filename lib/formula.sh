@@ -25,15 +25,26 @@ require_brew () {
     }
 
     taps () {
+      # taps function allowed multiple arguments
       for t in "$@"; do
-        { brew tap | /usr/bin/grep "$t"; } || {
-          brew tap "$t"
+        { brew tap | /usr/bin/grep "$t" >/dev/null; } || {
+          { # tap external formula repo
+            echo "Tapping $t..."
+            brew tap "$t" 2>/dev/null
+          } || {
+            # tap fail and prompt error
+            echo -e "\xE2\x9C\x98 tap $t" >&2
+            false
+          }
+        } && {
+          # prompt tap succes
+          echo -e "\xE2\x9C\x94\xEF\xB8\x8E tap $t"
         }
       done
     }
 
     # Extend homebrew formula repo
-    taps "caskroom/cask" \
+    taps  "caskroom/cask" \
           "homebrew/binary" \
           "homebrew/completions" \
           "homebrew/dupes"
