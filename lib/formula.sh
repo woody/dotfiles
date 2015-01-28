@@ -4,6 +4,7 @@
 set -e
 set -u
 
+source $DOTFILES_LOCAL/lib/prompt.sh
 
 require_brew () {
   (( $# > 0 )) && {
@@ -33,12 +34,12 @@ require_brew () {
             brew tap "$t" 2>/dev/null
           } || {
             # tap fail and prompt error
-            echo -e "\xE2\x9C\x98 tap $t" >&2
+            error "tap $t"
             false
           }
         } && {
           # prompt tap succes
-          echo -e "\xE2\x9C\x94\xEF\xB8\x8E tap $t"
+          success "tap $t"
         }
       done
     }
