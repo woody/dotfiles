@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-# Development toolkit
+# Tap
+
+
+# Formula
 formula readline \
         zlib \
         git \
@@ -10,3 +13,7 @@ formula readline \
         macvim \
         node \
         nvm
+
+# Cask
+cask vagrant
+
