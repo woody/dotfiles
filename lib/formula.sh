@@ -85,7 +85,7 @@ cask () {
 
   for c in "$@"; do
     # cask installed?
-    { brew cask list | grep "$c" >/dev/null; } || {
+    { brew cask list 2>/dev/null | grep "$c" >/dev/null; } || {
       # Install cask
       echo "Installing $c..."
       { brew cask install $c 2>/dev/null; } || {
