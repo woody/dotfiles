@@ -7,49 +7,51 @@ set -u
 source $DOTFILES_LOCAL/lib/prompt.sh
 
 require_brew () {
-  (( $# > 0 )) && {
-    echo "Expect zero agrument" >&2
-    exit 1
-  }
-
   # homebrew installed?
   { /usr/bin/which brew >/dev/null; } || {
-    #   # Install hombrew
-    /usr/bin/sudo -E -p "Require password to install homebrew: " \
-    /usr/bin/mkdir -p /usr/local && {
+
+    { # install homebrew
       $(/usr/bin/which ruby) -e \
-      "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" >/dev/null
+    } || {
+      # prompt install homebrew fails
+      error "Install homebrew."
+      exit
     }
-  } && {
-    [[ -x $(brew --prefix)/bin/brew-cask ]] || {
-      brew install caskroom/cask/brew-cask
-    }
-
-    taps () {
-      # taps function allowed multiple arguments
-      for t in "$@"; do
-        { brew tap | /usr/bin/grep "$t" >/dev/null; } || {
-          { # tap external formula repo
-            echo "Tapping $t..."
-            brew tap "$t" 2>/dev/null
-          } || {
-            # tap fail and prompt error
-            error "tap $t"
-            false
-          }
-        } && {
-          # prompt tap succes
-          success "tap $t"
-        }
-      done
-    }
-
-    # Extend homebrew formula repo
-    taps  "caskroom/cask" \
-          "homebrew/binary" \
-          "homebrew/completions" \
-          "homebrew/dupes"
   }
+}
+
+require_cask () {
+  # cask is homebrew for Mac application
+  [[ -x $(brew --prefix)/bin/brew-cask ]] || {
+    # install brew-cask
+    { brew install caskroom/cask/brew-cask >/dev/null; } || {
+      # prompt brew-cask install fail
+      error "Install brew-cask"
+      exit
+    }
+  }
+}
+
+tap () {
+  # Tap extend homebrew external formula repo
+  require_brew
+
+  # taps function allowed multiple arguments
+  for t in "$@"; do
+    { brew tap | /usr/bin/grep "$t" >/dev/null; } || {
+      { # tap external formula repo
+        echo "Tapping $t..."
+        brew tap "$t" 2>/dev/null
+      } && {
+        success "Tap $t"
+      } || {
+        # tap fail and prompt error
+        error "Tap $t"
+      }
+    }
+  done
+
 }
 
 formula () {
@@ -64,10 +66,46 @@ formula () {
     # Formula is installed?
     { $(/usr/bin/which brew) list | /usr/bin/grep "$name" >/dev/null; } || {
       # Install formula
-      $(/usr/bin/which brew) install "$f"
+      echo "Installing $name..."
+      { $(/usr/bin/which brew) install "$f" >/dev/null; } || {
+        # prompt formula install fails
+        error "Install $name."
+        false
+      }
+    } && {
+      # prompt formula install success
+      success "Install $name."
     }
   done
 }
+
+cask () {
+  # Declare homebrew cask
+  require_cask
+
+  for c in "$@"; do
+    # cask installed?
+    { brew cask list | grep "$c" >/dev/null; } || {
+      # Install cask
+      echo "Installing $c..."
+      { brew cask install $c 2>/dev/null; } || {
+        # prompt install cask fail
+        error "Install $c"
+        false
+      }
+    } && {
+      # prompt cask install success
+      success "Install $c"
+    }
+  done
+}
+
+
+tap "caskroom/cask" \
+    "homebrew/binary" \
+    "homebrew/completions" \
+    "homebrew/dupes"
+
 
 [[ -e $DOTFILES_LOCAL/formulas ]] && {
   source $DOTFILES_LOCAL/formulas
