@@ -88,7 +88,7 @@ cask () {
     { brew cask list 2>/dev/null | grep "$c" >/dev/null; } || {
       # Install cask
       echo "Installing $c..."
-      { brew cask install $c 2>/dev/null; } || {
+      { brew cask install $c >/dev/null; } || {
         # prompt install cask fail
         error "Install $c"
         false
