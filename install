@@ -6,6 +6,12 @@ set -e
 set -u
 
 
+sudo -v
+
+# Sudo keep alive for long-running install that need sudo internally
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+
 DOTFILES_LOCAL="$HOME/.dotfiles"
 DOTFILES_REMOTE="https://github.com/woody/dotfiles.git"
 
