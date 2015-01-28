@@ -6,5 +6,5 @@ success () {
 }
 
 error () {
-  echo -e "[ \xE2\x9C\x98 ] tap $t" >&2
+  echo -e "[ \xE2\x9C\x98 ] $1" >&2
 }
