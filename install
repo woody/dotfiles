@@ -9,19 +9,19 @@ set -u
 DOTFILES_LOCAL="$HOME/.dotfiles"
 DOTFILES_REMOTE="https://github.com/woody/dotfiles.git"
 
-declare IS_DEV
+IS_DEV=false
 
 #Parse arguments
 for arg in "$@"; do
   case $arg in
     --dev)
-      IS_DEV=1
+      IS_DEV=true
       ;;
   esac
 done
 
 # Skip over clone from remote while development.
-if [ $IS_DEV ]; then
+if $IS_DEV; then
   DOTFILES_DEV=$(/usr/bin/dirname $0)
 
   [[ $DOTFILES_DEV == "." ]] && {
