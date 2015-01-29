@@ -1,19 +1,24 @@
 #!/usr/bin/env bash
+# Which formulas should be hanlded by homebrew?
 
-# Tap
-
+# Extend brew formulas repos
+taps=(caskroom/cask
+      homebrew/binary
+      homebrew/completions
+      homebrew/dupes)
 
 # Formula
-formula readline \
-        zlib \
-        git \
-        ctags \
-        pyenv \
-        rbenv \
-        macvim \
-        node \
-        nvm
+formulas=(readline
+          zlib
+          git
+          ctags
+          pyenv
+          rbenv
+          macvim
+          node
+          nvm
+          packer)
 
 # Cask
-cask vagrant
+casks=(vagrant)
 
