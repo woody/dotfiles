@@ -17,7 +17,8 @@ source $DOTFILES_LOCAL/lib/prompt.sh
 
   { # install homebrew
     $(/usr/bin/which ruby) -e \
-    "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" >/dev/null
+    "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" \
+    >>$DOTFILES_LOG 2>&1
   } || {
     # prompt install homebrew fails
     error "Install homebrew."
@@ -29,7 +30,7 @@ source $DOTFILES_LOCAL/lib/prompt.sh
 # require brew-cask install Mac application
 [[ -x $(brew --prefix)/bin/brew-cask ]] || {
   # install brew-cask
-  { brew install caskroom/cask/brew-cask >/dev/null; } || {
+  { brew install caskroom/cask/brew-cask >>$DOTFILES_LOG 2>&1; } || {
     # prompt brew-cask install fail
     error "Install brew-cask"
     exit
@@ -45,7 +46,7 @@ set +u
     # Already tapped?
     { brew tap | /usr/bin/grep "$t" >/dev/null; } || {
       echo "Tapping $t..."
-      { brew tap "$t" 2>/dev/null; } || {
+      { brew tap "$t" >>$DOTFILES_LOG 2>&1; } || {
         # prompt tap fail
         error "Tap $t"
         false
@@ -67,7 +68,7 @@ set +u
     { brew list | /usr/bin/grep "$n" >/dev/null; } || {
       # Install formula
       echo "Installing $n..."
-      { brew install "$f" >/dev/null; } || {
+      { brew install "$f" >>$DOTFILES_LOG 2>&1; } || {
         # prompt formula install fails
         error "Install $n"
         false
@@ -86,7 +87,7 @@ set +u
     { brew cask list 2>/dev/null | grep "$c" >/dev/null; } || {
       # Install cask
       echo "Installing $c..."
-      { brew cask install $c >/dev/null; } || {
+      { brew cask install $c >>$DOTFILES_LOG 2>&1; } || {
         # prompt install cask fail
         error "Install $c"
         false

@@ -14,6 +14,11 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 DOTFILES_LOCAL="$HOME/.dotfiles"
 DOTFILES_REMOTE="https://github.com/woody/dotfiles.git"
+DOTFILES_LOG="$HOME/Library/Logs/mx.woody.dotfiles.log"
+
+[[ -f $DOTFILES_LOG ]] || {
+  /usr/bin/touch $DOTFILES_LOG
+}
 
 IS_DEV=false
 
