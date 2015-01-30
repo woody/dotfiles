@@ -17,7 +17,9 @@ formulas=(readline
           macvim
           node
           nvm
-          packer)
+          packer
+          gibo
+          vagrant-completion)
 
 # Cask
 casks=(vagrant)
