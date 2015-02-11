@@ -3,6 +3,7 @@
 
 # Extend brew formulas repos
 taps=(caskroom/cask
+      caskroom/versions
       homebrew/binary
       homebrew/completions
       homebrew/dupes)
