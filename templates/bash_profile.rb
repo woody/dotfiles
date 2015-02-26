@@ -18,19 +18,41 @@ module Templates
       ENV["PATH"].split(":").include?("/usr/local/bin")
     end
 
+    def pyenv_installed?
+      test("x", "/usr/local/bin/pyenv")
+    end
+
+    def rbenv_installed?
+      test("x", "/usr/local/bin/rbenv")
+    end
+
     def render()
-      ERB.new(<<-"EOF").result(binding)
-        <%# Include /usr/local/bin to $PATH %>
+      ERB.new(<<-"EOF", 0, "-").result(binding)
+        <%# Include /usr/local/bin in $PATH -%>
         <% if local_bin_in_path? %>
-          export PATH=<%= ENV["PATH"] %>
+        export PATH=<%= ENV["PATH"] %>
         <% else %>
-          export PATH=/usr/local/bin:<%= ENV["PATH"] %>
+        export PATH=/usr/local/bin:<%= ENV["PATH"] %>
         <% end %>
-      EOF
+        <%# Setup pyenv -%>
+        <% if pyenv_installed? %>
+        eval "$(pyenv init -)"
+        <% end %>
+        <%# Setup rbenv -%>
+        <% if rbenv_installed? %>
+        eval "$(rbenv init -)"
+        <% end %>
+        [[ -f ~/.bashrc ]] && {
+          source ~/.bashrc
+        }
+        EOF
     end
 
     def save(path=nil)
-
+      path = @@path unless path
+      File.open(path, "w+") { |f|
+        f.write(render)
+      }
     end
 
   end
