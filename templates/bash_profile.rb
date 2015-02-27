@@ -35,14 +35,13 @@ module Templates
         <% end %>
         <% if rbenv_installed? %>eval "$(rbenv init -)"
         <% end %>
-        [[ -f ~/.bashrc ]] && {
-          source ~/.bashrc
+
+        [ -f $(brew --prefix)/etc/bash_completion ] && {
+          source $(brew --prefix)/etc/bash_completion
         }
 
-        [[ -d /usr/local/etc/bash_completion.d ]] && {
-          for bash_completion in /usr/local/etc/bash_completion.d/*; do
-            source "$bash_completion"
-          done
+        [[ -f ~/.bashrc ]] && {
+          source ~/.bashrc
         }
         EOF
     end

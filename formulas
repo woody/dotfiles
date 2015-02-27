@@ -6,7 +6,8 @@ taps=(caskroom/cask
       caskroom/versions
       homebrew/binary
       homebrew/completions
-      homebrew/dupes)
+      homebrew/dupes
+      homebrew/versions)
 
 # Formula
 formulas=(readline
@@ -25,7 +26,8 @@ formulas=(readline
           packer-completion
           grunt-completion
           gem-completion
-          bundler-completion)
+          bundler-completion
+          bash-completion)
 
 # Cask
 casks=(vagrant)
