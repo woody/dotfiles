@@ -20,7 +20,12 @@ formulas=(readline
           nvm
           packer
           gibo
-          vagrant-completion)
+          vagrant-completion
+          pip-completion
+          packer-completion
+          grunt-completion
+          gem-completion
+          bundler-completion)
 
 # Cask
 casks=(vagrant)
