@@ -27,20 +27,13 @@ module Templates
     end
 
     def render()
-      ERB.new(<<-"EOF", 0, "-").result(binding)
-        <%# Include /usr/local/bin in $PATH -%>
-        <% if local_bin_in_path? %>
-        export PATH=<%= ENV["PATH"] %>
-        <% else %>
-        export PATH=/usr/local/bin:<%= ENV["PATH"] %>
+      ERB.new(<<-"EOF", 0, "<>").result(binding)
+        <% if local_bin_in_path? %>export PATH=<%= ENV["PATH"] %>
+        <% else %> export PATH=/usr/local/bin:<%= ENV["PATH"] %>
         <% end %>
-        <%# Setup pyenv -%>
-        <% if pyenv_installed? %>
-        eval "$(pyenv init -)"
+        <% if pyenv_installed? %>eval "$(pyenv init -)"
         <% end %>
-        <%# Setup rbenv -%>
-        <% if rbenv_installed? %>
-        eval "$(rbenv init -)"
+        <% if rbenv_installed? %>eval "$(rbenv init -)"
         <% end %>
         [[ -f ~/.bashrc ]] && {
           source ~/.bashrc
