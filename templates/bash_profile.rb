@@ -2,6 +2,7 @@
 # Bash profile template
 
 require "erb"
+require "Date"
 
 module Templates
   class BashProfile
@@ -14,30 +15,30 @@ module Templates
       end
     end
 
-    def local_bin_in_path?
-      ENV["PATH"].split(":").include?("/usr/local/bin")
-    end
-
-    def pyenv_installed?
-      test("x", "/usr/local/bin/pyenv")
-    end
-
-    def rbenv_installed?
-      test("x", "/usr/local/bin/rbenv")
-    end
-
     def render()
       ERB.new(<<-"EOF", 0, "<>").result(binding)
-        <% if local_bin_in_path? %>export PATH=<%= ENV["PATH"] %>
-        <% else %> export PATH=/usr/local/bin:<%= ENV["PATH"] %>
-        <% end %>
-        <% if pyenv_installed? %>eval "$(pyenv init -)"
-        <% end %>
-        <% if rbenv_installed? %>eval "$(rbenv init -)"
-        <% end %>
+        # Generated @ <%= Date.today %>
 
-        [ -f $(brew --prefix)/etc/bash_completion ] && {
-          source $(brew --prefix)/etc/bash_completion
+        export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+        { type -P pyenv >/dev/null; } && {
+          eval "$(pyenv init -)"
+        }
+
+        { type -P rbenv >/dev/null; } && {
+          eval "$(rbenv init -)"
+        }
+
+        # Brew related
+        { type -P brew >/dev/null; } && {
+          [ -f $(brew --prefix nvm)/nvm.sh ] && {
+            source $(brew --prefix nvm)/nvm.sh
+            export NVM_DIR=~/.nvm
+          }
+
+          [ -f $(brew --prefix)/etc/bash_completion ] && {
+            source $(brew --prefix)/etc/bash_completion
+          }
         }
 
         [[ -f ~/.bashrc ]] && {
