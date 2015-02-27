@@ -38,6 +38,12 @@ module Templates
         [[ -f ~/.bashrc ]] && {
           source ~/.bashrc
         }
+
+        [[ -d /usr/local/etc/bash_completion.d ]] && {
+          for bash_completion in /usr/local/etc/bash_completion.d/*; do
+            source "$bash_completion"
+          done
+        }
         EOF
     end
 
