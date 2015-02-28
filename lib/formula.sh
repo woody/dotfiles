@@ -65,7 +65,7 @@ set +u
     # Extract formula name
     n=$(/bin/echo $f | /usr/bin/awk '{print $1}')
     # Formula is installed?
-    { brew list | /usr/bin/grep "$n" >/dev/null; } || {
+    { echo $(brew --prefix $n 2>&1) >/dev/null; } || {
       # Install formula
       echo "Installing $n..."
       { brew install "$f" >>$DOTFILES_LOG 2>&1; } || {
