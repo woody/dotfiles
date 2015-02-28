@@ -19,7 +19,7 @@ module Templates
       ERB.new(<<-"EOF", 0, "<>").result(binding)
         # Generated @ <%= Date.today %>
 
-        export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+        export PATH=./bin:/usr/local/bin:$(getconf PATH)
 
         { type -P pyenv >/dev/null; } && {
           eval "$(pyenv init -)"
