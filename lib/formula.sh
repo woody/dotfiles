@@ -4,7 +4,7 @@
 set -e
 set -u
 
-source $DOTFILES_LOCAL/lib/prompt.sh
+source $DOTFILES_LOCAL/lib/private/prompt.sh
 
 # Export formulas declaration
 [[ -e $DOTFILES_LOCAL/formulas ]] && {
