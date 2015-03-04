@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 # Manage OSX missing ackage by homebrew
 
-set -e
-set -u
-
-
 reportSuccess () {
   local successIssuesCount=${#successIssues[@]}
   successIssues[$(( successIssuesCount + 1))]="$1"
@@ -26,9 +22,37 @@ reportFail () {
   # Install homebrew
   ruby -e \
   "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" || {
-    reportFail homebrew
-    false
+    echo "Homebrew installed fails!!!" >&2
+    return 1
   }
 } && {
   reportSuccess homebrew
+}
+
+# Extend official homebrew by brew tap
+extend_brew_formulas () {
+  for repo in ${formuals_repos[@]}; do
+    [[ $(brew tap | grep "$repo") ]] || {
+      brew tap $repo || {
+        reportFail "$repo"
+        false
+      }
+    } && {
+      reportSuccess "$repo"
+    }
+  done
+}
+
+# Install homebrew formulas
+install_brew_formulas () {
+  for formula in "${formulas[@]}"; do
+    [[ -d $(brew --cellar $formula) ]] || {
+      brew install $formula || {
+        reportFail "$formula"
+        false
+      }
+    } && {
+      reportSuccess "$formula"
+    }
+  done
 }
