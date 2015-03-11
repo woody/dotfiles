@@ -20,3 +20,15 @@ pyenv=$(type -P pyenv)
 remote_repo=https://github.com/yyuu/pyenv.git
 
 update_git_repo $local_repo $remote_repo
+
+# Install pyenv plugins
+plugins=("pyenv-virtualenv"
+         "pyenv-doctor"
+         "pyenv-update"
+         "pyenv-which-ext"
+         "pyenv-pip-migrate")
+
+for plugin in ${plugins[@]}; do
+  update_git_repo "$local_repo/plugins/$plugin" \
+  "https://github.com/yyuu/$plugin.git"
+done
