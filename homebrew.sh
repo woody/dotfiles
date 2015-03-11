@@ -57,8 +57,8 @@ install_brew_formulas () {
   done
 }
 
-# Clean up brewd package
-clean_up_brewd_package () {
+# Clean up brewed packages
+clean_up_brewed_packages () {
   while (( $# )); do
     [ -d "$(brew --cellar $1)" ] && {
       brew remove $1
