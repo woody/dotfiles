@@ -32,3 +32,7 @@ for plugin in ${plugins[@]}; do
   update_git_repo "$local_repo/plugins/$plugin" \
   "https://github.com/yyuu/$plugin.git"
 done
+
+# Update path
+path=$(path_remove "$local_repo/bin")
+export PATH="$local_repo/bin":$path
