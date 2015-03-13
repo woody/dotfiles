@@ -14,3 +14,7 @@ update_git_repo () {
   # Back to original
   cd - >>/dev/null
 }
+
+update_github_repo () {
+  update_git_repo $1 "https://github.com/${2}.git"
+}
