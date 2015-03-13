@@ -6,33 +6,23 @@
 clean_up_brewed_packages pyenv
 
 # Looking for pyenv local repo root
-pyenv=$(type -P pyenv)
+if [ -z "$PYENV_ROOT" ]; then
+  export PYENV_ROOT="$HOME/.plugins/pyenv"
+fi
 
-[[ $pyenv ]] && {
-  # strip trailing bin
-  local_repo=${pyenv%%/bin/pyenv}
-  if [[ $local_repo = $pyenv ]]; then
-    # trailing bin not stripped
-    false
-  fi
-} || local_repo=$HOME/.pyenv
-
-remote_repo=https://github.com/yyuu/pyenv.git
-
-update_git_repo $local_repo $remote_repo
+update_github_repo "$PYENV_ROOT" "yyuu/pyenv"
 
 # Install pyenv plugins
-plugins=("pyenv-virtualenv"
-         "pyenv-doctor"
-         "pyenv-update"
-         "pyenv-which-ext"
-         "pyenv-pip-migrate")
+plugins=("yyuu/pyenv-virtualenv"
+         "yyuu/pyenv-doctor"
+         "yyuu/pyenv-update"
+         "yyuu/pyenv-which-ext"
+         "yyuu/pyenv-pip-migrate")
 
 for plugin in ${plugins[@]}; do
-  update_git_repo "$local_repo/plugins/$plugin" \
-  "https://github.com/yyuu/$plugin.git"
+  update_github_repo "$PYENV_ROOT/plugins/${plugin##*/}" $plugin
 done
 
 # Update path
-path=$(path_remove "$local_repo/bin")
-export PATH="$local_repo/bin":$path
+path=$(path_remove "$PYENV_ROOT/bin")
+export PATH="$PYENV_ROOT/bin":$path
