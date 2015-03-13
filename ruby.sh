@@ -2,36 +2,26 @@
 
 # Manage multiple-versions ruby envoriments by rbenv
 
-# Clean up brewed
+# Clean up brewed rbenv
 clean_up_brewed_packages rbenv
 
-# Looking for rebnv local repo root
-rbenv=$(type -P rbenv)
+# Looking for rbenv local repo root
+if [ -z "$RBENV_ROOT" ]; then
+  export RBENV_ROOT="$HOME/.plugins/rbenv"
+fi
 
-[[ $rbenv ]] && {
-  # strip trailing bin
-  local_repo=${rbenv%%/bin/rbenv}
-  if [[ $local_repo = $rbenv ]]; then
-    # trailing bin not stripped
-    false
-  fi
-} || local_repo=$HOME/.rbenv
-
-remote_repo=https://github.com/sstephenson/rbenv.git
-
-update_git_repo $local_repo $remote_repo
+update_github_repo "$RBENV_ROOT" "sstephenson/rbenv"
 
 # Install rbenv plugins
-plugins=("rbenv-gem-rehash"
-         "rbenv-default-gems"
-         "rbenv-vars"
-         "ruby-build")
+plugins=("sstephenson/ruby-build"
+         "sstephenson/rbenv-vars"
+         "sstephenson/rbenv-default-gems"
+         "sstephenson/rbenv-gem-rehash")
 
 for plugin in ${plugins[@]}; do
-  update_git_repo "$local_repo/plugins/$plugin" \
-  "https://github.com/sstephenson/$plugin.git"
+  update_github_repo "$RBENV_ROOT/plugins/${plugin##*/}" $plugin
 done
 
 # Update path
-path=$(path_remove "$local_repo/bin")
-export PATH="$local_repo/bin":$path
+path=$(path_remove "$RBENV_ROOT/bin")
+export PATH="$RBENV_ROOT/bin":$path
