@@ -1,0 +1,39 @@
+# Remap PREFIX
+set -g prefix C-a
+unbind C-b
+bind a send-prefix
+set -s escape-time 1
+
+# Index start at 1
+set -g base-index 1
+set -g pane-base-index 1
+
+# Reload configuration file
+bind r source-file ~/.tmux.conf \; display "Reload configuration!!!"
+
+# Split window
+unbind '"'
+unbind %
+bind | split-window -h
+bind - split-window -v
+
+# Select pane
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+# Resize pane
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+# Disable mouse
+setw -g mode-mouse off
+
+set -g default-terminal "screen-256color"
+
+# Close window
+unbind &
+bind X kill-window
