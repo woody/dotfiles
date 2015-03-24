@@ -1,7 +1,7 @@
 # Remap PREFIX
 set -g prefix C-a
 unbind C-b
-bind a send-prefix
+bind C-a send-prefix
 set -s escape-time 1
 
 # Index start at 1
