@@ -57,7 +57,7 @@ install_brew_formulas () {
   done
 }
 
-remove_brewd_packages () {
+remove_brewed_packages () {
   # Allowed mutiple packages
   while (( $# )); do
     if [ -d "$(brew --cellar $1)" ]; then brew remove $1; fi
