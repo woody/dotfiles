@@ -2,12 +2,20 @@
 
 # Manage multiple-versions ruby envoriments by rbenv
 
-# Clean up brewed rbenv
-clean_up_brewed_packages rbenv
+if [[ ! $BREW_INCLUDED ]]; then source brew.sh; fi
+if [[ ! $GIT_INCLUDED ]]; then source git.sh; fi
+if [[ ! $PATH_INCLUDED ]]; then source path.sh; fi
+
+
+# Manually install rbenv instead of brewed
+remove_brewed_packages rbenv
+
+# Remove existing rbenv from PATH
+type -p rbenv && path_remove "$(dirname $(!!))"
 
 # Looking for rbenv local repo root
 if [ -z "$RBENV_ROOT" ]; then
-  export RBENV_ROOT="$HOME/.plugins/rbenv"
+  export RBENV_ROOT="$HOME/.dotfiles/.plugins/rbenv"
 fi
 
 update_github_repo "$RBENV_ROOT" "sstephenson/rbenv"
