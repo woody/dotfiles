@@ -11,7 +11,11 @@ if [[ ! $PATH_INCLUDED ]]; then source path.sh; fi
 remove_brewed_packages rbenv
 
 # Remove existing rbenv from PATH
-type -p rbenv && path_remove "$(dirname $(!!))"
+RBENV_PATH=$(type -P rbenv)
+
+[[ $RBENV_PATH ]] && {
+  path_remove $(dirname "$RBENV_PATH")
+}
 
 # Looking for rbenv local repo root
 if [ -z "$RBENV_ROOT" ]; then
