@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Manage OSX missing ackage by homebrew
 
+export BREW_INCLUDED=true
+
 reportSuccess () {
   local successIssuesCount=${#successIssues[@]}
   successIssues[$(( successIssuesCount + 1))]="$1"

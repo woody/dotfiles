@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export GIT_INCLUDED=true
+
 update_git_repo () {
   # Is it git repo?
   if [ -d "$1"/.git ]; then
