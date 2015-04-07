@@ -35,5 +35,5 @@ for plugin in ${plugins[@]}; do
 done
 
 # Update path
-path=$(path_remove "$RBENV_ROOT/bin")
+path=$(path_remove "$RBENV_ROOT/bin" "$RBENV_ROOT/shims")
 export PATH="$RBENV_ROOT/bin":$path
