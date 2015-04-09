@@ -10,16 +10,25 @@ if [[ ! $PATH_INCLUDED ]]; then source path.sh; fi
 # Manually install rbenv instead of brewed
 remove_brewed_packages rbenv
 
-# Remove existing rbenv from PATH
-RBENV_PATH=$(type -P rbenv)
-
-[[ $RBENV_PATH ]] && {
-  path_remove $(dirname "$RBENV_PATH")
-}
-
 # Looking for rbenv local repo root
 if [ -z "$RBENV_ROOT" ]; then
   export RBENV_ROOT="$HOME/.dotfiles/.plugins/rbenv"
+fi
+
+# Remove non-builtin rbenv from PATH
+RBENV_PATH=$(type -P rbenv)
+
+if [[ $RBENV_PATH ]]; then
+  RBENV_BIN=$(dirname "$RBENV_PATH")
+  RBENV_SHIMS="$(dirname "$RBEVN_BIN")/shims"
+fi
+
+if [[ $RBENV_BIN != $RBENV_ROOT/bin ]]; then
+  path_remove "$RBENV_BIN"
+fi
+
+if [[ $RBEVN_SHIMS != $RBENV_ROOT/shims ]]; then
+  path_remove "$RBENV_SHIMS"
 fi
 
 update_github_repo "$RBENV_ROOT" "sstephenson/rbenv"
