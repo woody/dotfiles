@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Manage OSX missing ackage by homebrew
 
+set -e
+
 export BREW_INCLUDED=true
 
 reportSuccess () {
@@ -12,11 +14,6 @@ reportFail () {
   local failIssuesCount=${#failIssues[@]}
   failIssues[$(( failIssuesCount + 1))]="$1"
 }
-
-# I think this should be call at top
-# make sure /usr/local/bin at PATH for installing homebrew
-{ ruby -e 'abort unless ENV["PATH"].split(":").include? "/usr/local/bin"'; } \
-|| export PATH=/usr/local/bin:$PATH
 
 # homebrew manage OSX missing packages
 # homebrew installed?

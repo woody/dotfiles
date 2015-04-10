@@ -13,3 +13,8 @@ function remove_path() {
   path="${path#:}"
   echo "$path"
 }
+
+
+# Ensure /usr/local/bin in PATH
+remove_path "/usr/local/bin"
+export PATH="/usr/local/bin:"$PATH
