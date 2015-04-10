@@ -5,33 +5,19 @@ set -e
 
 export BREW_INCLUDED=true
 
-reportSuccess () {
-  local successIssuesCount=${#successIssues[@]}
-  successIssues[$(( successIssuesCount + 1))]="$1"
-}
-
-reportFail () {
-  local failIssuesCount=${#failIssues[@]}
-  failIssues[$(( failIssuesCount + 1))]="$1"
-}
-
 # Install homebrew
 if [ -z "$(type -P brew)" ]; then
   ruby -e \
   "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-# Extend official homebrew by brew tap
-extend_brew_formulas () {
-  for repo in ${formuals_repos[@]}; do
-    [[ $(brew tap | grep "$repo") ]] || {
-      brew tap $repo || {
-        reportFail "$repo"
-        false
-      }
-    } && {
-      reportSuccess "$repo"
+# Extend brew offcial formulas repos
+extend_brew_repos () {
+  while (( $# )); do
+    { brew tap | grep "$1"; } || {
+      brew tap $1
     }
+    shift
   done
 }
 
