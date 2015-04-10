@@ -15,18 +15,11 @@ reportFail () {
   failIssues[$(( failIssuesCount + 1))]="$1"
 }
 
-# homebrew manage OSX missing packages
-# homebrew installed?
-{ type -P brew >/dev/null; } || {
-  # Install homebrew
+# Install homebrew
+if [ -z "$(type -P brew)" ]; then
   ruby -e \
-  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" || {
-    echo "Homebrew installed fails!!!" >&2
-    return 1
-  }
-} && {
-  reportSuccess homebrew
-}
+  "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
 
 # Extend official homebrew by brew tap
 extend_brew_formulas () {
