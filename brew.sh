@@ -45,17 +45,11 @@ extend_brew_formulas () {
   done
 }
 
-# Install homebrew formulas
-install_brew_formulas () {
-  for formula in "${formulas[@]}"; do
-    [[ -d $(brew --cellar $formula) ]] || {
-      brew install $formula || {
-        reportFail "$formula"
-        false
-      }
-    } && {
-      reportSuccess "$formula"
-    }
+# Install packages via homebrew
+install_brew_packages () {
+  while (( $# )); do
+    brew insall $1
+    shift
   done
 }
 
