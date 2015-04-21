@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-# Manage OSX missing ackage by homebrew
-
-set -e
+# OSX package manager
 
 export BREW_INCLUDED=true
 
@@ -11,28 +9,32 @@ if [ -z "$(type -P brew)" ]; then
   "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-# Extend brew offcial formulas repos
 extend_brew_repos () {
   while (( $# )); do
-    { brew tap | grep "$1"; } || {
-      brew tap $1
-    }
+    brew tap $1 2>/dev/null
     shift
   done
 }
 
-# Install packages via homebrew
 install_brew_packages () {
+  # Allowed multiple packages
   while (( $# )); do
-    brew insall $1
+    brew install $1 2>/dev/null
     shift
   done
 }
 
-remove_brewed_packages () {
-  # Allowed mutiple packages
+remove_brew_packages () {
+  # Allowed multiple packages
   while (( $# )); do
     if [ -d "$(brew --cellar $1)" ]; then brew remove $1; fi
     shift
   done
 }
+
+# Install brew cask
+# Be quiet
+extend_brew_repos caskroom/cask
+install_brew_packages brew-cask
+
+export BREW_INSTALLED=true
